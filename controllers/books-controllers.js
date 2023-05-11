@@ -49,6 +49,45 @@ router.get('/', (req, res) => {
         res.render('error404')
     })
 })
+//show
+router.get('/:id', (req, res) => {
+    let id = req.params.id
+    books.findByIdAndUpdate(id)
+    .then(foundBooks => {
+        res.send(foundBooks)
+    })
+    .catch(err => {
+        console.log('err', err)
+        res.render('error404')
+    })
+})
+//CREATE
+router.post('/', (req, res) => {
+    Books.create(req.body)
+    res.redirect('/books')
+})
+
+
+//EDIT METHOD
+router.put('/:id', (req, res) => {
+    let id = req.params.id
+    Books.findByIdAndUpdate(id, req.body, {new: true})
+        .then(updatedBook => {
+            console.log(updatedBook)
+            res.redirect(`/books/${id}`)
+        })
+        .catch(err => {
+            console.log("err", err)
+        })
+})
+//delete
+router.delete('/:id', (req, res) =>{
+    let id = req.params.id
+    books.findByIdAndDelete(id)
+    .then(deletedBook => {
+        res.status(303).redirect('/books')
+    })
+})
 
 
 
